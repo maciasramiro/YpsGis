@@ -1,0 +1,47 @@
+<!-- <div>
+    <h2>Menú</h2>
+    <ul>
+      <li><a [routerLink]="['/mapa']">Ver Mapa</a></li>
+      <li><a [routerLink]="['/parametros']">Ver Parámetros</a></li>
+    </ul>
+  </div> -->
+
+  <!DOCTYPE html>
+<html>
+<head>
+  <title>Mapa con Leaflet</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+
+<div id="map" style="height: 400px;"></div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  // Inicializar el mapa
+  var map = L.map('map').setView([51.505, -0.09], 13);
+
+  // Añadir capa de mapa base (puedes cambiarlo según tus necesidades)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+    // Coordenadas del polígono
+    var polygonCoords = [
+      [4338880.63146481, 6300772.08024664],
+      [4338570.98874463, 6300197.83206517],
+      [4338400.70980206, 6300503.39527505],
+      [4338880.63146481, 6300772.08024664]
+    ];
+
+    // Crear polígono y añadirlo al mapa
+    var polygon = L.polygon(polygonCoords, {color: 'red'}).addTo(map);
+
+    // Ajustar la vista del mapa para mostrar el polígono
+    map.fitBounds(polygon.getBounds());
+</script>
+
+</body>
+</html>

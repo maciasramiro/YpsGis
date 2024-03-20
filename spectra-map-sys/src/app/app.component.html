@@ -1,0 +1,24 @@
+<!-- <app-header></app-header>
+
+    <router-outlet></router-outlet>
+
+<app-footer></app-footer> -->
+<app-header></app-header>
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav class="sidenav-nav sidenav-text-white" mode="side" opened>
+       <mat-nav-list>
+         <a mat-list-item class="router-link-white" routerLink="/inicio">Inicio</a>
+         <a mat-list-item class="router-link-white" routerLink="/mapa">Mapa</a>
+         <a mat-list-item class="router-link-white" routerLink="/parametros">Parametros</a>
+         <a mat-list-item class="router-link-white" routerLink="/contacto">Contacto</a>
+       </mat-nav-list>
+    </mat-sidenav>
+   
+    <mat-sidenav-content>
+
+       <router-outlet></router-outlet>
+
+    </mat-sidenav-content>
+   </mat-sidenav-container>
+
+   <app-footer></app-footer>
