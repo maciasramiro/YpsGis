@@ -1,9 +1,16 @@
-<!-- sidebar.component.html -->
 <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #sidenav class="sidenav" mode="side" opened>
-      <!-- Contenido del menú -->
-    </mat-sidenav>
-    <mat-sidenav-content>
-      <!-- Contenido principal de la aplicación -->
-    </mat-sidenav-content>
-  </mat-sidenav-container>
+  <mat-sidenav class="sidenav-nav sidenav-text-white" mode="side" opened>
+     <mat-nav-list>
+        <a mat-list-item class="router-link-white" routerLink="/inicio">Inicio</a>
+        <a mat-list-item class="router-link-white" routerLink="/mapa">Mapa</a>
+        <a mat-list-item class="router-link-white" routerLink="/parametros">Parametros</a>
+        <a mat-list-item class="router-link-white" routerLink="/contacto">Contacto</a>
+     </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+
+     <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+</mat-sidenav-container>

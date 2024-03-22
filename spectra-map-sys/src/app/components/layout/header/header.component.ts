@@ -7,4 +7,15 @@ import { Component } from '@angular/core';
 })
 export class HeaderComponent {
 
+  navBarOpen: boolean = true;
+
+  handleClickBars() {
+    this.navBarOpen = !this.navBarOpen
+  }
+
+  getNavBarOpenStatus(): boolean {
+    return this.navBarOpen;
+  }
+
+
 }

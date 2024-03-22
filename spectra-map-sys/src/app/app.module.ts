@@ -15,7 +15,8 @@ import { FooterComponent } from './components/layout/footer/footer.component';
 import { HeaderComponent } from './components/layout/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule  } from '@angular/common/http';
-import { MatListModule } from '@angular/material/list'; 
+import { MatListModule } from '@angular/material/list';
+import { FiltrosMapaComponent } from './components/filtros-mapa/filtros-mapa.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { MatListModule } from '@angular/material/list';
     SidebarComponent,
     FooterComponent,
     HeaderComponent,
+    FiltrosMapaComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,7 +39,7 @@ import { MatListModule } from '@angular/material/list';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatListModule,
-    MatSidenavModule
+    MatSidenavModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

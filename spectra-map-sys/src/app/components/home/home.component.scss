@@ -1,0 +1,27 @@
+.home-container{
+    border: 1px solid #D6D5D5;
+    border-radius: 30px;
+    padding: 20px;
+}
+
+
+.icon-title{
+    color: #FF5700;
+    height: 30px;
+}
+
+.title{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-left: 10px;
+}
+
+.title p{
+    margin: 0;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%;
+    padding-left: 10px;
+}
