@@ -2,7 +2,7 @@
   <header class="header">
     <div class="navbar">
 
-
+      <div class="d-flex align-items-center justify-content-center">
         <div (click)="handleClickBars()">
           <i class="fa-solid fa-bars burgerIcon"></i>
         </div>
@@ -11,6 +11,11 @@
           <img src="assets/images/ypsilon-logo.png" alt="Ypsilon Logo">
           <p class="text-center title">Spectra Map</p>
         </a>
+      </div>
+
+      <div>
+        <i class="fa-solid fa-circle-user userIcon"></i>
+      </div>
 
     </div>
   </header>
@@ -19,22 +24,33 @@
 <div class="body">
 
   <div class="sidenav" mode="side" opened *ngIf="navBarOpen">
-    <a class="router-link" routerLink="/inicio">
-      <i class="fa-solid fa-home sidenav-icon"></i>
-      Inicio
-    </a>
-    <a mat-list-ite class="router-link" routerLink="/mapa">
-      <i class="fa-solid fa-location-dot sidenav-icon"></i>
-      Mapa
-    </a>
-    <a class="router-link" routerLink="/parametros">
-      <i class="fa-solid fa-sliders sidenav-icon"></i>
-      Parametros
-    </a>
-    <a class="router-link" routerLink="/contacto">
-      <i class="fa-solid fa-address-book sidenav-icon"></i>
-      Contacto
-    </a>
+    <div class="sidenav-options">
+      <a class="router-link" routerLink="/inicio">
+        <i class="fa-solid fa-home sidenav-icon"></i>
+        Inicio
+      </a>
+      <a mat-list-ite class="router-link" routerLink="/mapa">
+        <i class="fa-solid fa-location-dot sidenav-icon"></i>
+        Mapa
+      </a>
+      <a class="router-link" routerLink="/parametros">
+        <i class="fa-solid fa-sliders sidenav-icon"></i>
+        Parametros
+      </a>
+      <a class="router-link" routerLink="/contacto">
+        <i class="fa-solid fa-address-book sidenav-icon"></i>
+        Contacto
+      </a>
+    </div>
+
+    <div class="sidenav-bottom">
+      <a class="logout-button" routerLink="#">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Log Out
+      </a>
+    </div>
+
+
   </div>
 
   <div class="content">
