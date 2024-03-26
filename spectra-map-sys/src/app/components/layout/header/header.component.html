@@ -10,6 +10,7 @@
         <a class="navbar-brand d-flex align-items-center justify-content-center" href="/home">
           <img src="assets/images/ypsilon-logo.png" alt="Ypsilon Logo">
           <p class="text-center title">Spectra Map</p>
+          <p class="title-page" id="title"></p>
         </a>
       </div>
 
@@ -25,19 +26,19 @@
 
   <div class="sidenav" mode="side" opened *ngIf="navBarOpen">
     <div class="sidenav-options">
-      <a class="router-link" routerLink="/inicio">
+      <a class="router-link" routerLink="/inicio" (click)="handleClickOptions('INICIO')">
         <i class="fa-solid fa-home sidenav-icon"></i>
         Inicio
       </a>
-      <a mat-list-ite class="router-link" routerLink="/mapa">
+      <a mat-list-ite class="router-link" routerLink="/mapa" (click)="handleClickOptions('MAPA')">
         <i class="fa-solid fa-location-dot sidenav-icon"></i>
         Mapa
       </a>
-      <a class="router-link" routerLink="/parametros">
+      <a class="router-link" routerLink="/parametros" (click)="handleClickOptions('PARAMETROS')">
         <i class="fa-solid fa-sliders sidenav-icon"></i>
         Parametros
       </a>
-      <a class="router-link" routerLink="/contacto">
+      <a class="router-link" routerLink="/contacto" (click)="handleClickOptions('CONTACTO')">
         <i class="fa-solid fa-address-book sidenav-icon"></i>
         Contacto
       </a>
