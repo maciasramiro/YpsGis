@@ -1,0 +1,81 @@
+
+#Filtros {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre los elementos */
+    justify-content: center; /* Centrar los elementos horizontalmente */
+    border: 1px solid #D6D5D5;
+    border-radius: 30px;
+    padding: 10px 15px;
+    margin: 20px 0px;
+
+}
+
+.title p{
+    margin: 0;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.filtros-display{
+    display: flex;
+    gap: 25px;
+}
+
+.select {
+    cursor: pointer;
+    border-radius: 5px;
+    border: 0px;
+    color: #626262;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    width: 200px;
+    height: 38px;
+    text-align: center;
+    display: block;
+}
+ 
+.filtro{
+    border-radius: 5px;
+    border: 1px solid #626262;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+    
+.filtro p {
+    margin: 0;
+    text-align: center;
+    font-size: 13px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   #Filtros > div {
+//     flex-basis: calc(50% - 20px); /* Cada div ocupa el 50% del ancho con espacio entre ellos */
+//     margin-bottom: 20px; /* Separación entre los divs */
+//     display: flex;
+//     flex-direction: column; /* Los elementos dentro del div se muestran en columna */
+//   }
+  
+//   #Filtros > div > label {
+//     margin-bottom: 5px; /* Espacio entre la etiqueta y el select */
+//   }
+  
+//   #Filtros > div > select {
+//     width: 100%; /* El select ocupa todo el ancho del div */
+//   }
+    

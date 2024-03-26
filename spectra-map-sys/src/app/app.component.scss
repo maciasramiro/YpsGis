@@ -8,74 +8,11 @@ html {
   }
   
   
-  .footer {
-    position: absolute;
-    bottom:  0;
-    width:  100%;
-    height:  60px; /* Establece la altura de tu pie de página aquí */
-    line-height:  60px;
-  }
-
-/* app.component.css */
-/* .sidenav-container {
-    padding-top:  75px; 
-    padding-bottom:  50px; 
-  } */
-
-
-
-
-  .sidenav-container {
-    height: 100%;
-    
-    /* background-color: #f5f5f5; */
-    /* border-right: 1px solid #ddd; */
-   }
-   .router-link-white {
-    color: #ddd;
-   }
-
-   .sidenav-text-white .mat-list-item {
-     color: white; 
-   }
-
-   mat-sidenav {
-    /* background-color: #333; */
-    color: #fff;
-    padding-top: 3.5rem;
-    @media screen and (min-width: 600px) {
-       padding-top: 1rem;
-    }
-   }
-   
-   mat-sidenav-content {
-    /* color: #fff; */
-    padding-top: 3.5rem;
-    @media screen and (min-width: 600px) {
-       padding-top: 1rem;
-    }
-   }
-
-   #Filtros {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px; /* Espacio entre los elementos */
-    justify-content: center; /* Centrar los elementos horizontalmente */
-  }
-  
-  #Filtros > div {
-    flex-basis: calc(50% - 20px); /* Cada div ocupa el 50% del ancho con espacio entre ellos */
-    margin-bottom: 20px; /* Separación entre los divs */
-    display: flex;
-    flex-direction: column; /* Los elementos dentro del div se muestran en columna */
-  }
-  
-  #Filtros > div > label {
-    margin-bottom: 5px; /* Espacio entre la etiqueta y el select */
-  }
-  
-  #Filtros > div > select {
-    width: 100%; /* El select ocupa todo el ancho del div */
-  }
-  
+  // .footer {
+  //   position: absolute;
+  //   bottom:  0;
+  //   width:  100%;
+  //   height:  60px; /* Establece la altura de tu pie de página aquí */
+  //   line-height:  60px;
+  // }
 

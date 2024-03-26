@@ -15,7 +15,8 @@ import { FooterComponent } from './components/layout/footer/footer.component';
 import { HeaderComponent } from './components/layout/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule  } from '@angular/common/http';
-import { MatListModule } from '@angular/material/list'; 
+import { MatListModule } from '@angular/material/list';
+import { FiltrosMapaComponent } from './components/filtros-mapa/filtros-mapa.component';
 import { PowerbiReportComponent } from './components/powerbi-report/powerbi-report.component';
 
 
@@ -30,6 +31,7 @@ import { PowerbiReportComponent } from './components/powerbi-report/powerbi-repo
     SidebarComponent,
     FooterComponent,
     HeaderComponent,
+    FiltrosMapaComponent,
     PowerbiReportComponent,
   ],
   imports: [
@@ -40,7 +42,6 @@ import { PowerbiReportComponent } from './components/powerbi-report/powerbi-repo
     BrowserAnimationsModule,
     MatListModule,
     MatSidenavModule,
-    
   ],
   providers: [],
   bootstrap: [AppComponent]
