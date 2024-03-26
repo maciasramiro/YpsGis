@@ -16,6 +16,7 @@ import { HeaderComponent } from './components/layout/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule  } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list'; 
+import { PowerbiReportComponent } from './components/powerbi-report/powerbi-report.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { MatListModule } from '@angular/material/list';
     SidebarComponent,
     FooterComponent,
     HeaderComponent,
+    PowerbiReportComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,7 +39,8 @@ import { MatListModule } from '@angular/material/list';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatListModule,
-    MatSidenavModule
+    MatSidenavModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

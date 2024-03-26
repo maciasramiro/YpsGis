@@ -35,7 +35,9 @@
               "node_modules/leaflet/dist/leaflet.css"
             ],
             "scripts": [
-              "node_modules/leaflet/dist/leaflet.js"
+              "node_modules/leaflet/dist/leaflet.js",
+              "node_modules/powerbi-client/dist/powerbi.min.js", 
+              "node_modules/powerbi-models/dist/models.min.js"
             ]
           },
           "configurations": {
