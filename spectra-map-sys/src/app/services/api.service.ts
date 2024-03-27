@@ -39,4 +39,11 @@ export class ApiService {
   getLotes(manzana:string):Observable<any >{
     return this.http.get<any>(`${this.apiUrl}/parcela/GetYps?nomenclatura=${manzana}`);
   }
+
+  getPdf(url: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/parcela/GetPdfFile?url=${encodeURIComponent(url)}`, { responseType: 'blob' });
+  }
+  getPdfUrl(url: string): Observable<Blob> {
+    return this.http.get<Blob>(url, { responseType: 'blob' as 'json' });
+  }
 }

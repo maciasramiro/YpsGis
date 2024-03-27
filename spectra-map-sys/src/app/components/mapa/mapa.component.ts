@@ -28,6 +28,8 @@ export class MapaComponent implements OnInit {
   geoJsonLayerDpto: any;
   myLayerControl!: L.Control.Layers;
 
+  pdfSrc: string | ArrayBuffer | Blob | Uint8Array | URL | { range: any } = '';
+
   constructor(private service: ApiService) {
     /* document.addEventListener('DOMContentLoaded', (event) => {
       this.setupSelectChangeListener();
@@ -36,6 +38,7 @@ export class MapaComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeMap();
+    
   }
 
   initializeMap(): void {
@@ -93,7 +96,6 @@ export class MapaComponent implements OnInit {
     // Remueve todas las capas del mapa
     this.mimapa.eachLayer((layer: any) => {
       this.mimapa.removeLayer(layer);
-
     });
     if (this.myLayerControl) {
       this.myLayerControl.remove();
@@ -122,7 +124,6 @@ export class MapaComponent implements OnInit {
       },
     }).addTo(this.mimapa);
     this.mimapa.fitBounds(this.geoJsonLayerDpto.getBounds());*/
-
 
     // Control para cambiar el tipo de mapa
     const baseMaps = {
@@ -502,9 +503,21 @@ export class MapaComponent implements OnInit {
     }
 
     if (pedaniasElement) {
+      (window as any).loadPdf = (urlPdf: string): void => {   
+        this.service.getPdf(urlPdf).subscribe(
+          (pdfBlob: Blob) => {
+            const fileURL = URL.createObjectURL(pdfBlob);
+            window.open(fileURL, '_blank');
+          },
+          error => {
+            console.error('Error fetching PDF:', error);
+            // Aquí puedes manejar el error como desees
+          }
+        );
+      };
 
       pedaniasElement.addEventListener('change', async (event) => {
-        this.updateMapLayers()
+        this.updateMapLayers();
         const selectedValue = (event.target as HTMLSelectElement).value;
         this.selectedPedania = selectedValue;
         console.log(`Pedania seleccionada: ${this.selectedPedania}`);
@@ -642,43 +655,84 @@ export class MapaComponent implements OnInit {
 
                   let popupContent = '<ul>';
                   let hasUrls = false;
+                  let pdfUrls: { Titulo: string; Url: string }[] = [];
+
+                  /* for (const property in feature.properties) {
+                    if (
+                      Object.prototype.hasOwnProperty.call(
+                        feature.properties,
+                        property
+                      ) &&
+                      property === 'URLS'
+                    ) {
+                      hasUrls = true;
+                      const urls = feature.properties[property];
+                      urls.forEach(
+                        (urlObject: { Titulo: string; Url: string }) => {
+                          pdfUrls.push(urlObject);
+                        }
+                      );
+                      popupContent += '<li><strong>' + property + ':</strong>';
+                                            
+                    } else {
+                      popupContent += `<li><strong>${property}:</strong> ${feature.properties[property]}</li>`;
+                    }
+                  } */
+                  /* for (const property in feature.properties) {
+                    if (
+                      Object.prototype.hasOwnProperty.call(
+                        feature.properties,
+                        property
+                      ) &&
+                      property === 'URLS'
+                    ) {
+                      hasUrls = true;
+                      const urls = feature.properties[property];
+                      urls.forEach(
+                        (urlObject: { Titulo: string; Url: string }) => {
+                          pdfUrls.push(urlObject);
+                        }
+                      );
+                      popupContent += '<li><strong>' + property + ':</strong>';
+                    } else {
+                      popupContent += `<li><strong>${property}:</strong> ${feature.properties[property]}</li>`;
+                    }
+                  }
+                  if (hasUrls) {
+                    console.log("Tiene Urls");
+                    
+                    //popupContent += '<li><strong>URLS:</strong><ul>';
+                    pdfUrls.forEach((urlObject) => {
+                      console.log(urlObject.Url);
+                      popupContent += `<ng-container *ngTemplateOutlet="pdfViewer; context: { url: '${urlObject.Url}', title: '${urlObject.Titulo}' }"></ng-container>`;
+                    });
+                    popupContent += '</ul></li>';
+                  } */
                   for (const property in feature.properties) {
                     if (
-                      Object.prototype.hasOwnProperty.call(feature.properties, property) &&
+                      Object.prototype.hasOwnProperty.call(
+                        feature.properties,
+                        property
+                      ) &&
                       property === 'URLS'
                     ) {
                       hasUrls = true;
                       const urls = feature.properties[property];
                       popupContent += '<li><strong>' + property + ':</strong>';
                       popupContent += '<ul>';
-                      urls.forEach((urlObject: { Titulo: string; Url: string }) => {
-                        popupContent += `<li><a href="${urlObject.Url}" target="_blank">${urlObject.Titulo}</a></li>`;
-                        /* if (urlObject.Url.endsWith('.pdf')) {
-                          popupContent += `<li><a href="#" onclick="window.open('${urlObject.Url}', '_blank').document.write('<embed src="${urlObject.Url}" type="application/pdf" width="100%" height="600px" />'); return false;">${urlObject.Titulo}</a></li>`;
-                      } else {
-                          popupContent += `<li><a href="${urlObject.Url}" target="_blank">${urlObject.Titulo}</a></li>`;
-                      } */
-
-                        /* if (urlObject.Url.endsWith('.pdf')) {
-                          //popupContent += `<li><a href="#" onclick="window.open('${urlObject.Url}', '_blank').document.write('<embed src="${urlObject.Url}" type="application/pdf" width="100%" height="600px" />'); return false;">${urlObject.Titulo}</a></li>`;
-                          popupContent += `<li><a href="#" onclick="return openPDF('${urlObject.Url}');">${urlObject.Titulo}</a></li>`;
-                        } else {
-                          popupContent += '<li><a href="' + urlObject.Url + '" target="_blank">' + urlObject.Titulo + '</a></li>';
-                        } */
-                      });
+                      urls.forEach(
+                        (urlObject: { Titulo: string; Url: string }) => {
+                          //popupContent += `<li><app-pdf-viewer [pdfUrl]="${urlObject.Url}" [pdfTitle]="${urlObject.Titulo}"></app-pdf-viewer></li>`;
+                          popupContent += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
+                        }
+                      );
                       popupContent += '</ul>';
                       popupContent += '</li>';
                     } else {
                       popupContent += `<li><strong>${property}:</strong> ${feature.properties[property]}</li>`;
                     }
                   }
-                  if (hasUrls) {
-                    popupContent += '</ul>';
-                  } else {
-                    popupContent = 'No hay URLs disponibles.<br>' + popupContent;
-                  }
 
-                  // Asignar el contenido HTML al popup
                   layer.bindPopup(popupContent);
                 },
               }).addTo(this.mimapa);
@@ -693,8 +747,6 @@ export class MapaComponent implements OnInit {
             console.error('Error al llamar al servicio:', error);
           }
         );
-
-
       });
     }
 
@@ -759,9 +811,24 @@ export class MapaComponent implements OnInit {
   openPDF(url: string | URL | undefined) {
     const newWindow = window.open(url, '_blank');
     if (newWindow) {
-      newWindow.document.write(`<embed src="${url}" type="application/pdf" width="100%" height="600px" />`);
+      newWindow.document.write(
+        `<embed src="${url}" type="application/pdf" width="100%" height="600px" />`
+      );
     } else {
-      console.error("No se pudo abrir la ventana.");
+      console.error('No se pudo abrir la ventana.');
     }
   }
+
+  /* loadPdf(url: string): void {
+    this.service.getPdf(url).subscribe(
+      (pdfBlob: Blob) => {
+        const fileURL = URL.createObjectURL(pdfBlob);
+        window.open(fileURL, '_blank');
+      },
+      (error) => {
+        console.error('Error fetching PDF:', error);
+        // Aquí puedes manejar el error como desees
+      }
+    );
+  } */
 }

@@ -18,6 +18,7 @@ import { HttpClientModule  } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import { FiltrosMapaComponent } from './components/filtros-mapa/filtros-mapa.component';
 import { PowerbiReportComponent } from './components/powerbi-report/powerbi-report.component';
+import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { PowerbiReportComponent } from './components/powerbi-report/powerbi-repo
     HeaderComponent,
     FiltrosMapaComponent,
     PowerbiReportComponent,
+    PdfViewerComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,7 @@ import { PowerbiReportComponent } from './components/powerbi-report/powerbi-repo
     AppRoutingModule,
     BrowserAnimationsModule,
     MatListModule,
-    MatSidenavModule,
+    MatSidenavModule
   ],
   providers: [],
   bootstrap: [AppComponent]
