@@ -76,17 +76,18 @@
     display: flex;
     flex-direction: column;
     gap: 25px ;
-    min-height: calc(100vh - 125px);
+    justify-content: space-between;
+    max-height: calc(100vh - 125px);
+  }
+
+  .sidenav-bottom{
+    padding-bottom: 10px;
   }
 
   .sidenav-options{
     display: flex;
     flex-direction: column;
     gap: 25px ;
-  }
-  
-  .sidenav-bottom{
-    margin-top: 400px;
   }
 
   .logout-button{
@@ -120,20 +121,4 @@
    .router-link:hover{
     background-color: #1e1e1e;
    }
-
-   
-
-  //  mat-sidenav {
-  //   /* background-color: #333; */
-  //   height: 100%;
-  //   color: #fff;
-  //   padding-top: 3.5rem;
-  //   @media screen and (min-width: 600px) {
-  //      padding-top: 1rem;
-  //   }
-  //  }
-   
-  //  mat-sidenav-container {
-  //   flex: 1; /* Esto asegura que el contenedor del sidenav ocupe todo el espacio vertical disponible */
-  // }
 

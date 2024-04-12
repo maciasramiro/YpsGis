@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FiltrosMapaComponent } from '../filtros-mapa/filtros-mapa.component';
 import { ApiService } from 'src/app/services/api.service';
 import * as L from 'leaflet';
 import { Feature, FeatureCollection } from '../../models/departamentoGeo';
@@ -26,6 +27,8 @@ export class MapaComponent implements OnInit {
   myLayerControl!: L.Control.Layers;
 
   pdfSrc: string | ArrayBuffer | Blob | Uint8Array | URL | { range: any } = '';
+
+  @ViewChild(FiltrosMapaComponent) filtrosMapa!: FiltrosMapaComponent;
 
   constructor(private service: ApiService) {
   }
@@ -199,6 +202,81 @@ export class MapaComponent implements OnInit {
     });
   }
 
+  searchByNomenclatura(): void {
+    const nomenclatura = this.filtrosMapa.getInputNomen();
+    // const nomenclatura = document.getElementById('nomenclaturaInput')?.innerText
+    console.log('ENTRA ACAA');
+    console.log(nomenclatura);
+
+    this.service.getLotes(nomenclatura as string).subscribe(
+      (datos) => {
+        let GeoJson: FeatureCollection | undefined;
+
+        try {
+          GeoJson = JSON.parse(datos);
+        } catch (error) {
+          console.error('Error al parsear los datos JSON:', error);
+        }
+        if (GeoJson && Array.isArray(GeoJson.features)) {
+          this.parcelas = GeoJson;
+          console.log('lotes recibidas:', GeoJson);
+          console.log('Lotes Datos Recibidos', datos);
+
+          const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
+            style: {
+              color: 'blue',
+              opacity: 0.7,
+            },
+            onEachFeature: function (
+              feature: { properties: { [x: string]: any } },
+              layer: { bindPopup: (arg0: string) => void }
+            ) {
+              let popupContent = '<ul>';
+              let hasUrls = false;
+              let pdfUrls: { Titulo: string; Url: string }[] = [];
+              for (const property in feature.properties) {
+                if (
+                  Object.prototype.hasOwnProperty.call(
+                    feature.properties,
+                    property
+                  ) &&
+                  property === 'URLS'
+                ) {
+                  hasUrls = true;
+                  const urls = feature.properties[property];
+                  popupContent += '<li><strong>' + property + ':</strong>';
+                  popupContent += '<ul>';
+                  urls.forEach(
+                    (urlObject: { Titulo: string; Url: string }) => {
+                      popupContent += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
+                    }
+                  );
+                  popupContent += '</ul>';
+                  popupContent += '</li>';
+                } else {
+                  popupContent += `<li><strong>${property}:</strong> ${feature.properties[property]}</li>`;
+                }
+              }
+
+              layer.bindPopup(popupContent);
+            },
+          }).addTo(this.mimapa);
+          this.mimapa.fitBounds(geoJsonLayer.getBounds());
+        } else {
+          console.error(
+            'El objeto GeoJson no tiene la estructura esperada.'
+          );
+        }
+      },
+      (error) => {
+        console.error('Error al llamar al servicio:', error);
+      }
+    );
+  }
+
+  onSearchClicked(): void {
+    this.searchByNomenclatura();
+  }
 
   setupSelectChangeListener() {
     const departamentoElement = document.getElementById(

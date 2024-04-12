@@ -16,7 +16,7 @@ const routes: Routes = [
   //{ path: 'parametros', component: ParametrosComponent },
   { path: '**', redirectTo: '/home' }, // Redirecciona todas las rutas no definidas a /login
 
-  { path: 'map', component: MapComponent }
+  // { path: 'map', component: MapComponent }
   
 ];
 

@@ -1,21 +1,50 @@
-<div id="filtros">
-
-  <div class="title">
-    <p>Filtros: </p>
+<div id="contenedor">
+  <div class="filtros">
+    <div class="title">
+      <p>Filtros: </p>
+    </div>
+    <div class="filtros-display">
+  
+      <div class="filtro">
+        <p class="filtro-title">Departamento</p>
+        <select id="departamentosSelect" class="select"></select>
+      </div>
+      <div class="filtro">
+        <p class="filtro-title">Pedanía</p>
+        <select id="pedaniasSelect" class="select"></select>
+      </div>
+      <div class="filtro">
+        <p class="filtro-title">Radio Urbano</p>
+        <select id="radiourbanoSelect" class="select"></select>
+      </div>
+    </div>
   </div>
-  <div class="filtros-display">
 
-    <div class="filtro">
-      <p class="filtro-title">Departamento</p>
-      <select id="departamentosSelect" class="select"></select>
+  <div class="divider"></div>
+
+  <div class="busqueda">
+    <div class="title">
+      <p>Buscar por: </p>
     </div>
-    <div class="filtro">
-      <p class="filtro-title">Pedanía</p>
-      <select id="pedaniasSelect" class="select"></select>
-    </div>
-    <div class="filtro">
-      <p class="filtro-title">Radio Urbano</p>
-      <select id="radiourbanoSelect" class="select"></select>
+    <div class="filtros-display">
+  
+      <div class="filtro">
+        <div class="d-flex">
+          <input [(ngModel)]="checkNomen" (change)="handleCheckNomen()" type="checkbox" class="checkboxFiltro">
+          <p class="filtro-title">Nomenclatura</p>
+        </div>
+        <input [(ngModel)]="inputNomen" type="number" class="select">
+      </div>
+      <div class="filtro">
+        <div class="d-flex">
+          <input [(ngModel)]="checkCuenta" (change)="handleCheckCuenta()" type="checkbox" class="checkboxFiltro" name="" id="checkCuenta" disabled>
+          <p class="filtro-title">Cuenta</p>
+        </div>
+        <input [(ngModel)]="inputCuenta" id="contratoInput" disabled class="select">
+      </div>
+      <div class="contenedorBtn">
+        <button class="btnBuscar" (click)="onClickSearch()">Buscar</button>
+      </div>
     </div>
   </div>
 </div>
