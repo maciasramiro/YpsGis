@@ -1,22 +1,23 @@
-
 #contenedor {
     display: flex;
     align-items: center;
-    gap: 20px; /* Espacio entre los elementos */
-    justify-content: space-around; /* Centrar los elementos horizontalmente */
+    gap: 20px;
+    /* Espacio entre los elementos */
+    justify-content: space-around;
+    /* Centrar los elementos horizontalmente */
     border: 1px solid #D6D5D5;
     border-radius: 30px;
     padding: 10px 15px;
     margin-bottom: 20px;
 }
 
-.title p{
+.title p {
     margin: 0;
     font-weight: 700;
     font-size: 20px;
 }
 
-.filtros-display{
+.filtros-display {
     display: flex;
     align-items: end;
     gap: 25px;
@@ -37,21 +38,43 @@
     // text-align: center;
     display: block;
 }
- 
-.filtro{
+
+.input {
+    cursor: pointer;
+    border-radius: 5px;
+    border: 0px;
+    border: 1px solid #626262;
+    color: #626262;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    min-width: 140px;
+    height: 38px;
+    // text-align: center;
+    display: block;
+}
+
+.input:disabled {
+    border: 1px solid #c0c0c08b;
+    background-color: #EFEFEF4D;
+    cursor: auto;
+}
+
+.filtro {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
 
-.contenedorBtn{
+.contenedorBtn {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: end;
 }
 
-.btnBuscar{
+.btnBuscar {
     height: 38px;
     border-radius: 5px;
     border: 0px;
@@ -59,48 +82,65 @@
     color: #ffffff;
 }
 
-.btnBuscar:hover{
+.btnBuscar:hover {
     background-color: #ff7b39;
 }
-    
+
 .filtro p {
     margin: 0;
     // text-align: center;
     font-size: 13px;
 }
 
-.divider{
+.divider {
     border: 1px solid #D6D5D5;
     height: 90px;
 }
 
-.checkboxFiltro{
+.checkboxFiltro {
     margin-right: 5px;
 }
 
 
+.toggle-label {
+    display: inline-block;
+    margin-right: 10px;
+    width: 35px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 17px;
+    position: relative;
+}
 
+.toggle-label:before {
+    content: '';
+    position: absolute;
+    width: 13px;
+    height: 13px;
+    background-color: white;
+    border-radius: 50%;
+    top: 3px;
+    left: 3px;
+    transition: 0.3s;
+}
 
+#toggleFiltros{
+    display: none;
+}
 
+#toggleFiltros:checked + .toggle-label:before {
+    transform: translateX(16px);
+  }
+#toggleFiltros:checked + .toggle-label {
+    background-color: #ff7b39;
+}
+#toggleBuscar{
+    display: none;
+}
 
-
-
-
-
-
-
-//   #Filtros > div {
-//     flex-basis: calc(50% - 20px); /* Cada div ocupa el 50% del ancho con espacio entre ellos */
-//     margin-bottom: 20px; /* Separación entre los divs */
-//     display: flex;
-//     flex-direction: column; /* Los elementos dentro del div se muestran en columna */
-//   }
-  
-//   #Filtros > div > label {
-//     margin-bottom: 5px; /* Espacio entre la etiqueta y el select */
-//   }
-  
-//   #Filtros > div > select {
-//     width: 100%; /* El select ocupa todo el ancho del div */
-//   }
-    
+#toggleBuscar:checked + .toggle-label:before {
+    transform: translateX(16px);
+  }
+#toggleBuscar:checked + .toggle-label {
+    background-color: #ff7b39;
+}

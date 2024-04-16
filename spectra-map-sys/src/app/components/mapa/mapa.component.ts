@@ -204,10 +204,8 @@ export class MapaComponent implements OnInit {
 
   searchByNomenclatura(): void {
     const nomenclatura = this.filtrosMapa.getInputNomen();
-    // const nomenclatura = document.getElementById('nomenclaturaInput')?.innerText
-    console.log('ENTRA ACAA');
-    console.log(nomenclatura);
-
+    console.log('Aca tambien entra');
+    
     this.service.getLotes(nomenclatura as string).subscribe(
       (datos) => {
         let GeoJson: FeatureCollection | undefined;
@@ -219,8 +217,6 @@ export class MapaComponent implements OnInit {
         }
         if (GeoJson && Array.isArray(GeoJson.features)) {
           this.parcelas = GeoJson;
-          console.log('lotes recibidas:', GeoJson);
-          console.log('Lotes Datos Recibidos', datos);
 
           const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
             style: {
@@ -272,10 +268,95 @@ export class MapaComponent implements OnInit {
         console.error('Error al llamar al servicio:', error);
       }
     );
+
+    this.updateMapLayers()
   }
 
-  onSearchClicked(): void {
+  searchByCuenta(): void {
+    const cuenta = this.filtrosMapa.getInputCuenta();
+    console.log("Aca entra 1");
+    console.log(cuenta);
+    
+  
+    this.service.getByCuenta(cuenta as string).subscribe(
+      (datos) => {
+
+
+        let GeoJson: FeatureCollection | undefined;
+        
+        console.log("Aca entra 2");
+        console.log(datos);
+
+        try {
+          GeoJson = JSON.parse(datos);
+          console.log("Aca entra 3");
+        } catch (error) {
+          console.error('Error al parsear los datos JSON:', error);
+        }
+        if (GeoJson && Array.isArray(GeoJson.features)) {
+          this.parcelas = GeoJson;
+          console.log("Aca entra 4");
+          console.log(GeoJson);
+
+          const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
+            style: {
+              color: 'blue',
+              opacity: 0.7,
+            },
+            onEachFeature: function (
+              feature: { properties: { [x: string]: any } },
+              layer: { bindPopup: (arg0: string) => void }
+            ) {
+              let popupContent = '<ul>';
+              let hasUrls = false;
+              let pdfUrls: { Titulo: string; Url: string }[] = [];
+              for (const property in feature.properties) {
+                if (
+                  Object.prototype.hasOwnProperty.call(
+                    feature.properties,
+                    property
+                  ) &&
+                  property === 'URLS'
+                ) {
+                  hasUrls = true;
+                  const urls = feature.properties[property];
+                  popupContent += '<li><strong>' + property + ':</strong>';
+                  popupContent += '<ul>';
+                  urls.forEach(
+                    (urlObject: { Titulo: string; Url: string }) => {
+                      popupContent += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
+                    }
+                  );
+                  popupContent += '</ul>';
+                  popupContent += '</li>';
+                } else {
+                  popupContent += `<li><strong>${property}:</strong> ${feature.properties[property]}</li>`;
+                }
+              }
+
+              layer.bindPopup(popupContent);
+            },
+          }).addTo(this.mimapa);
+          this.mimapa.fitBounds(geoJsonLayer.getBounds());
+        } else {
+          console.error(
+            'El objeto GeoJson no tiene la estructura esperada.'
+          );
+        }
+      },
+      (error) => {
+        console.error('Error al llamar al servicio:', error);
+      }
+    );
+
+    this.updateMapLayers()
+  }
+
+  onSearchNomenclatura(): void {
     this.searchByNomenclatura();
+  }
+  onSearchCuenta(): void {
+    this.searchByCuenta();
   }
 
   setupSelectChangeListener() {
