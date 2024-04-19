@@ -17,10 +17,37 @@
     justify-content: space-between;
     align-items: center;
   }
-  
+
+  .logoTitle{
+    margin-left: 140px;
+  }
+
+  .logoContainer{
+    padding: 5px;
+    background-color: #ffffffc6;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .titleContainer{
+    margin-left: 10px;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+  }
+
   .title{
     font-family: 'Baloo Bhai 2', sans-serif !important;
     font-size: 24px !important;
+  }
+
+  .subtitle{
+    font-family: 'Baloo Bhai 2', sans-serif !important;
+    font-size: 16px !important;
   }
   
   .title-page{
@@ -45,7 +72,6 @@
 
   .navbar-brand img {
     height:  40px;
-    margin-left:  10px;
   }
 
   .navbar-brand p {

@@ -8,29 +8,58 @@ import { Component, Output, EventEmitter, ViewChild, ElementRef } from '@angular
 export class FiltrosMapaComponent {
   @Output() searchNomenclatura = new EventEmitter<void>();
   @Output() searchCuenta = new EventEmitter<void>();
+  @Output() clearMap = new EventEmitter<void>();
   @ViewChild('inputNomen') inputNomenProps!: ElementRef;
   @ViewChild('inputCuenta') inputCuentaProps!: ElementRef;
+
+  selectDepto: boolean = true
+  selectPedania: boolean = true
+  selectRadio: boolean = true
   
   inputNomen: string = '';
-  inputNomenc: boolean = true
+  inputNomenc: boolean = false
   inputCuentas: boolean = false
   inputCuenta: string = ''; 
-  checkNomen: boolean = true;
+  checkNomen: boolean = false;
   checkCuenta: boolean = false;
+  disCheck: boolean = false
 
-  /* toggleFiltros: boolean = true;
+  toggleFiltros: boolean = true;
   toggleBuscar: boolean = false;
 
   handleChangeFiltros() {
-   this.toggleFiltros = !this.toggleFiltros
+    this.toggleFiltros = !this.toggleFiltros
+    if(this.toggleFiltros = true){
+      this.toggleBuscar = false
+      this.selectDepto = true
+      this.selectPedania = true
+      this.selectRadio = true
 
-    console.log('FILTROS: ', this.toggleFiltros)
+      this.disCheck = false
+      this.checkNomen = false
+      this.inputNomenc = false
+      this.checkCuenta = false
+      this.inputCuentas = false
+      this.inputNomen = ''
+      this.inputCuenta = ''
+    }
   } 
   handleChangeBuscar() {
-   this.toggleBuscar = !this.toggleBuscar
-
-    console.log('BUSCAR: ', this.toggleBuscar)
-  }  */
+    this.toggleBuscar = !this.toggleBuscar
+    if(this.toggleBuscar = true){      
+      this.toggleFiltros = false
+      this.checkNomen = true
+      this.inputNomenc = true
+      this.checkCuenta = false
+      this.inputCuentas = false
+      this.disCheck = true
+      this.selectDepto = false
+      this.selectPedania = false
+      this.selectRadio = false
+      this.inputNomen = ''
+      this.inputCuenta = ''
+    }
+  }
 
   handleCheckCuenta() {
     this.checkNomen = false
@@ -55,8 +84,13 @@ export class FiltrosMapaComponent {
       this.searchCuenta.emit()
     }
     if(!this.checkCuenta && !this.checkNomen){
-
     }
+  }
+
+  onClickClear(){
+    this.inputNomen = ''
+    this.inputCuenta = ''
+    this.clearMap.emit()
   }
 
   getInputNomen(): string {

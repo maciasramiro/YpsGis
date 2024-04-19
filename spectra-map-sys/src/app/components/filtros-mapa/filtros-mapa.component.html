@@ -1,55 +1,72 @@
-<div id="contenedor">
-  <div class="filtros">
-    <div class="title d-flex align-items-center">
-      <!-- <input type="checkbox" id="toggleFiltros" [(ngModel)]="toggleFiltros" (change)="handleChangeFiltros()">
-      <label for="toggleFiltros" class="toggle-label"></label> -->
-      <p>Filtros: </p>
-    </div>
-    <div class="filtros-display">
 
-      <div class="filtro">
-        <p class="filtro-title">Departamento</p>
-        <select id="departamentosSelect" class="select"></select>
+<div class="containerDisplay">
+
+  <div id="contenedor">
+    <div class="busqueda">
+      <div class="title d-flex align-items-center">
+        
+        <input type="checkbox" id="toggleBuscar" [(ngModel)]="toggleBuscar" (click)="handleChangeBuscar()">
+        
+        <label for="toggleBuscar" class="toggle-label"></label>
+        <p>Buscar por: </p>
       </div>
-      <div class="filtro">
-        <p class="filtro-title">Pedanía</p>
-        <select id="pedaniasSelect" class="select"></select>
+      <div class="filtros-display">
+  
+        <div class="filtro">
+          <div class="d-flex">
+            <input [(ngModel)]="checkNomen" (change)="handleCheckNomen()"  [disabled]="!disCheck" type="checkbox" class="checkboxFiltro">
+            <p class="filtro-title">Nomenclatura</p>
+          </div>
+          <input [(ngModel)]="inputNomen" [disabled]="!inputNomenc" type="number" class="input">
+        </div>
+        <div class="filtro">
+          <div class="d-flex">
+            <input [(ngModel)]="checkCuenta" (change)="handleCheckCuenta()"  [disabled]="!disCheck" type="checkbox" class="checkboxFiltro" name=""
+              id="checkCuenta">
+            <p class="filtro-title">Cuenta</p>
+          </div>
+          <input [(ngModel)]="inputCuenta" id="cuentaInput" [disabled]="!inputCuentas" class="input">
+        </div>
+        <div class="contenedorBtn">
+          <button class="btn btnBuscar" (click)="onClickSearch()">Buscar</button>
+        </div>
       </div>
-      <div class="filtro">
-        <p class="filtro-title">Radio Urbano</p>
-        <select id="radiourbanoSelect" class="select"></select>
+    </div>
+  
+    <div class="divider"></div>
+  
+    <div class="filtros">
+      <div class="title d-flex align-items-center">
+        
+        <input type="checkbox" id="toggleFiltros" [(ngModel)]="toggleFiltros" (click)="handleChangeFiltros()">
+        
+        <label for="toggleFiltros" class="toggle-label"></label>
+        <p>Filtros: </p>
       </div>
+      <div class="filtros-display">
+  
+        <div class="filtro">
+          <p class="filtro-title">Departamento</p>
+          <select [(ngModel)]="selectDepto" [disabled]="!selectDepto" id="departamentosSelect" class="select"></select>
+        </div>
+        <div class="filtro">
+          <p class="filtro-title">Pedanía</p>
+          <select [(ngModel)]="selectPedania" [disabled]="!selectPedania" id="pedaniasSelect" class="select"></select>
+        </div>
+        <div class="filtro">
+          <p class="filtro-title">Radio Urbano</p>
+          <select [(ngModel)]="selectRadio" [disabled]="!selectRadio" id="radiourbanoSelect" class="select"></select>
+        </div>
+      </div>
+    </div>
+    
+    <div class="divider"></div>
+  
+    <div class="btnLimpiarContainer">
+      <button class="btnLimpiar" (click)="onClickClear()">Limpiar</button>
     </div>
   </div>
 
-  <div class="divider"></div>
+  
 
-  <div class="busqueda">
-    <div class="title d-flex align-items-center">
-      <!-- <input type="checkbox" id="toggleBuscar" [(ngModel)]="toggleBuscar" (change)="handleChangeBuscar()">
-      <label for="toggleBuscar" class="toggle-label"></label> -->
-      <p>Buscar por: </p>
-    </div>
-    <div class="filtros-display">
-
-      <div class="filtro">
-        <div class="d-flex">
-          <input [(ngModel)]="checkNomen" (change)="handleCheckNomen()" type="checkbox" class="checkboxFiltro">
-          <p class="filtro-title">Nomenclatura</p>
-        </div>
-        <input [(ngModel)]="inputNomen" [disabled]="!inputNomenc" type="number" class="input">
-      </div>
-      <div class="filtro">
-        <div class="d-flex">
-          <input [(ngModel)]="checkCuenta" (change)="handleCheckCuenta()" type="checkbox" class="checkboxFiltro" name=""
-            id="checkCuenta">
-          <p class="filtro-title">Cuenta</p>
-        </div>
-        <input [(ngModel)]="inputCuenta" id="cuentaInput" [disabled]="!inputCuentas" class="input">
-      </div>
-      <div class="contenedorBtn">
-        <button class="btnBuscar" (click)="onClickSearch()">Buscar</button>
-      </div>
-    </div>
-  </div>
 </div>

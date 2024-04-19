@@ -35,7 +35,6 @@ export class MapaComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeMap();
-
   }
 
   initializeMap(): void {
@@ -355,8 +354,75 @@ export class MapaComponent implements OnInit {
   onSearchNomenclatura(): void {
     this.searchByNomenclatura();
   }
+
   onSearchCuenta(): void {
     this.searchByCuenta();
+  }
+
+  onClearMap(): void {
+    console.log('Llega hasta aca');
+    this.service.getDepartamentos().subscribe(
+      (datos) => {
+        let GeoJson: FeatureCollection | undefined;
+
+        try {
+          GeoJson = JSON.parse(datos);
+        } catch (error) {
+          console.error('Error al parsear los datos JSON:', error);
+        }
+        if (GeoJson && Array.isArray(GeoJson.features)) {
+          this.departamentos = GeoJson;
+          console.log('departamentos recibidos:', GeoJson);
+          this.loadDepartmentsIntoSelect(GeoJson.features);
+
+          /* Reinicio los otros selct */
+          const pedaniasSelect = document.getElementById(
+            'pedaniasSelect'
+          ) as HTMLSelectElement;
+          const radiourbanoSelect = document.getElementById(
+            'radiourbanoSelect'
+          ) as HTMLSelectElement;
+          pedaniasSelect.innerHTML = '';
+          radiourbanoSelect.innerHTML = '';
+          const defaultOption = new Option('Seleccione', '');
+          pedaniasSelect.add(defaultOption);
+          radiourbanoSelect.add(defaultOption);
+      
+
+          const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
+            style: {
+              color: 'purple',
+              opacity: 0.5,
+            },
+            onEachFeature: function (
+              feature: { properties: { [x: string]: string } },
+              layer: { bindPopup: (arg0: string) => void }
+            ) {
+              if (feature.properties) {
+                layer.bindPopup(
+                  Object.keys(feature.properties)
+                    .map(function (k) {
+                      return k + ': ' + feature.properties[k];
+                    })
+                    .join('<br />')
+                );
+              }
+            },
+          }).addTo(this.mimapa);
+          this.mimapa.fitBounds(geoJsonLayer.getBounds());
+          this.setupSelectChangeListener();
+        } else {
+          console.error('El objeto GeoJson no tiene la estructura esperada.');
+        }
+      },
+      (error) => {
+        console.error('Error al llamar al servicio:', error);
+      }
+    );
+
+
+
+    this.updateMapLayers(); // Actualiza las capas del mapa
   }
 
   setupSelectChangeListener() {
