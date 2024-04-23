@@ -30,8 +30,7 @@ export class MapaComponent implements OnInit {
 
   @ViewChild(FiltrosMapaComponent) filtrosMapa!: FiltrosMapaComponent;
 
-  constructor(private service: ApiService) {
-  }
+  constructor(private service: ApiService) {}
 
   ngOnInit(): void {
     this.initializeMap();
@@ -40,7 +39,6 @@ export class MapaComponent implements OnInit {
   initializeMap(): void {
     //this.mimapa = L.map('mapa').setView([-31.4135, -64.1805], 12);  Cordoba Ciudad
     this.mimapa = L.map('mapa').setView([-31.4167, -64.1833], 8);
-
 
     this.service.getDepartamentos().subscribe(
       (datos) => {
@@ -58,7 +56,7 @@ export class MapaComponent implements OnInit {
 
           const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
             style: {
-              color: 'purple',
+              color: 'black',
               opacity: 0.5,
             },
             onEachFeature: function (
@@ -66,13 +64,52 @@ export class MapaComponent implements OnInit {
               layer: { bindPopup: (arg0: string) => void }
             ) {
               if (feature.properties) {
-                layer.bindPopup(
-                  Object.keys(feature.properties)
-                    .map(function (k) {
-                      return k + ': ' + feature.properties[k];
-                    })
-                    .join('<br />')
-                );
+
+                let propertiesList = ''
+
+                for (const prop in feature.properties) {
+                  if (Object.prototype.hasOwnProperty.call(feature.properties, prop)) {
+                    // Añadimos cada propiedad al listado
+                    propertiesList += `
+                                        <div style="border: 1px solid #D6D5D5; width: auto;"></div>
+                                        <div style=" padding: 5px 15px;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: space-between;
+                                                    min-width: 225px;
+                                                    "
+                                        >
+                                          <strong>${prop} </strong> 
+                                          <p style="margin: 0">${feature.properties[prop]}</p>
+                                        </div>
+                                        `;
+                  }
+                  
+                }
+
+                const popupContent = `
+                    <div 
+                      style=" border: 1px solid #D6D5D5;
+                              border-radius: 10px;" 
+                    >
+                      <h5 style=" text-align: center;
+                                  margin: 0;
+                                  padding: 7px 15px;
+                                  background-color: #FF5700;
+                                  border-radius: 10px 10px 0 0;
+                                  color: #FFFFFF;
+                                  "
+                      >
+                        Departamento
+                      </h5>
+
+                      <div>${propertiesList}</div>
+
+
+                    </div>
+                  `;
+                  layer.bindPopup(popupContent)
+                
               }
             },
           }).addTo(this.mimapa);
@@ -204,7 +241,7 @@ export class MapaComponent implements OnInit {
   searchByNomenclatura(): void {
     const nomenclatura = this.filtrosMapa.getInputNomen();
     console.log('Aca tambien entra');
-    
+
     this.service.getLotes(nomenclatura as string).subscribe(
       (datos) => {
         let GeoJson: FeatureCollection | undefined;
@@ -241,11 +278,9 @@ export class MapaComponent implements OnInit {
                   const urls = feature.properties[property];
                   popupContent += '<li><strong>' + property + ':</strong>';
                   popupContent += '<ul>';
-                  urls.forEach(
-                    (urlObject: { Titulo: string; Url: string }) => {
-                      popupContent += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
-                    }
-                  );
+                  urls.forEach((urlObject: { Titulo: string; Url: string }) => {
+                    popupContent += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
+                  });
                   popupContent += '</ul>';
                   popupContent += '</li>';
                 } else {
@@ -258,9 +293,7 @@ export class MapaComponent implements OnInit {
           }).addTo(this.mimapa);
           this.mimapa.fitBounds(geoJsonLayer.getBounds());
         } else {
-          console.error(
-            'El objeto GeoJson no tiene la estructura esperada.'
-          );
+          console.error('El objeto GeoJson no tiene la estructura esperada.');
         }
       },
       (error) => {
@@ -268,33 +301,30 @@ export class MapaComponent implements OnInit {
       }
     );
 
-    this.updateMapLayers()
+    this.updateMapLayers();
   }
 
   searchByCuenta(): void {
     const cuenta = this.filtrosMapa.getInputCuenta();
-    console.log("Aca entra 1");
+    console.log('Aca entra 1');
     console.log(cuenta);
-    
-  
+
     this.service.getByCuenta(cuenta as string).subscribe(
       (datos) => {
-
-
         let GeoJson: FeatureCollection | undefined;
-        
-        console.log("Aca entra 2");
+
+        console.log('Aca entra 2');
         console.log(datos);
 
         try {
           GeoJson = JSON.parse(datos);
-          console.log("Aca entra 3");
+          console.log('Aca entra 3');
         } catch (error) {
           console.error('Error al parsear los datos JSON:', error);
         }
         if (GeoJson && Array.isArray(GeoJson.features)) {
           this.parcelas = GeoJson;
-          console.log("Aca entra 4");
+          console.log('Aca entra 4');
           console.log(GeoJson);
 
           const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
@@ -321,11 +351,9 @@ export class MapaComponent implements OnInit {
                   const urls = feature.properties[property];
                   popupContent += '<li><strong>' + property + ':</strong>';
                   popupContent += '<ul>';
-                  urls.forEach(
-                    (urlObject: { Titulo: string; Url: string }) => {
-                      popupContent += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
-                    }
-                  );
+                  urls.forEach((urlObject: { Titulo: string; Url: string }) => {
+                    popupContent += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
+                  });
                   popupContent += '</ul>';
                   popupContent += '</li>';
                 } else {
@@ -338,9 +366,7 @@ export class MapaComponent implements OnInit {
           }).addTo(this.mimapa);
           this.mimapa.fitBounds(geoJsonLayer.getBounds());
         } else {
-          console.error(
-            'El objeto GeoJson no tiene la estructura esperada.'
-          );
+          console.error('El objeto GeoJson no tiene la estructura esperada.');
         }
       },
       (error) => {
@@ -348,15 +374,7 @@ export class MapaComponent implements OnInit {
       }
     );
 
-    this.updateMapLayers()
-  }
-
-  onSearchNomenclatura(): void {
-    this.searchByNomenclatura();
-  }
-
-  onSearchCuenta(): void {
-    this.searchByCuenta();
+    this.updateMapLayers();
   }
 
   onClearMap(): void {
@@ -387,11 +405,10 @@ export class MapaComponent implements OnInit {
           const defaultOption = new Option('Seleccione', '');
           pedaniasSelect.add(defaultOption);
           radiourbanoSelect.add(defaultOption);
-      
 
           const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
             style: {
-              color: 'purple',
+              color: 'black',
               opacity: 0.5,
             },
             onEachFeature: function (
@@ -420,8 +437,6 @@ export class MapaComponent implements OnInit {
       }
     );
 
-
-
     this.updateMapLayers(); // Actualiza las capas del mapa
   }
 
@@ -443,7 +458,7 @@ export class MapaComponent implements OnInit {
             const fileURL = URL.createObjectURL(pdfBlob);
             window.open(fileURL, '_blank');
           },
-          error => {
+          (error) => {
             console.error('Error fetching PDF:', error);
           }
         );
@@ -544,7 +559,7 @@ export class MapaComponent implements OnInit {
 
               const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
                 style: {
-                  color: 'purple',
+                  color: 'black',
                   opacity: 0.3,
                 },
                 onEachFeature: function (
@@ -600,7 +615,7 @@ export class MapaComponent implements OnInit {
 
               this.geoJsonLayerDpto = L.geoJSON(GeoJson as GeoJsonObject, {
                 style: {
-                  color: 'purple',
+                  color: 'black',
                   opacity: 0.5,
                 },
                 onEachFeature: function (

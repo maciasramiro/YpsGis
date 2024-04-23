@@ -47,6 +47,7 @@ export class ApiService {
   getPdf(url: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/parcela/GetPdfFile?url=${encodeURIComponent(url)}`, { responseType: 'blob' });
   }
+  
   getPdfUrl(url: string): Observable<Blob> {
     return this.http.get<Blob>(url, { responseType: 'blob' as 'json' });
   }

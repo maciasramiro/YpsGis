@@ -18,7 +18,7 @@
 .title{
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: flex-start;
     margin-left: 10px;
 }
 
@@ -29,4 +29,14 @@
     font-weight: 700;
     line-height: 100%;
     padding-left: 10px;
+}
+
+.AS{
+    background-color: #FF5700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 75px;
+    border: 1px solid #D6D5D5;
+    height: 90px !important;
 }
