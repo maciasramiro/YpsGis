@@ -42,6 +42,7 @@ export class MapaComponent implements OnInit {
 
     this.service.getDepartamentos().subscribe(
       (datos) => {
+        this.processGeoJsonData(datos, "Departamento");
         let GeoJson: FeatureCollection | undefined;
 
         try {
@@ -53,70 +54,7 @@ export class MapaComponent implements OnInit {
           this.departamentos = GeoJson;
           console.log('departamentos recibidos:', GeoJson);
           this.loadDepartmentsIntoSelect(GeoJson.features);
-
-          const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
-            style: {
-              color: 'black',
-              opacity: 0.5,
-            },
-            onEachFeature: function (
-              feature: { properties: { [x: string]: string } },
-              layer: { bindPopup: (arg0: string) => void }
-            ) {
-              if (feature.properties) {
-
-                let propertiesList = ''
-
-                for (const prop in feature.properties) {
-                  if (Object.prototype.hasOwnProperty.call(feature.properties, prop)) {
-                    // Añadimos cada propiedad al listado
-                    propertiesList += `
-                                        <div style="border: 1px solid #D6D5D5; width: auto;"></div>
-                                        <div style=" padding: 5px 15px;
-                                                    display: flex;
-                                                    align-items: center;
-                                                    justify-content: space-between;
-                                                    min-width: 225px;
-                                                    "
-                                        >
-                                          <strong>${prop} </strong> 
-                                          <p style="margin: 0">${feature.properties[prop]}</p>
-                                        </div>
-                                        `;
-                  }
-                  
-                }
-
-                const popupContent = `
-                    <div 
-                      style=" border: 1px solid #D6D5D5;
-                              border-radius: 10px;" 
-                    >
-                      <h5 style=" text-align: center;
-                                  margin: 0;
-                                  padding: 7px 15px;
-                                  background-color: #FF5700;
-                                  border-radius: 10px 10px 0 0;
-                                  color: #FFFFFF;
-                                  "
-                      >
-                        Departamento
-                      </h5>
-
-                      <div>${propertiesList}</div>
-
-
-                    </div>
-                  `;
-                  layer.bindPopup(popupContent)
-                
-              }
-            },
-          }).addTo(this.mimapa);
-          this.mimapa.fitBounds(geoJsonLayer.getBounds());
           this.setupSelectChangeListener();
-        } else {
-          console.error('El objeto GeoJson no tiene la estructura esperada.');
         }
       },
       (error) => {
@@ -244,57 +182,7 @@ export class MapaComponent implements OnInit {
 
     this.service.getLotes(nomenclatura as string).subscribe(
       (datos) => {
-        let GeoJson: FeatureCollection | undefined;
-
-        try {
-          GeoJson = JSON.parse(datos);
-        } catch (error) {
-          console.error('Error al parsear los datos JSON:', error);
-        }
-        if (GeoJson && Array.isArray(GeoJson.features)) {
-          this.parcelas = GeoJson;
-
-          const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
-            style: {
-              color: 'blue',
-              opacity: 0.7,
-            },
-            onEachFeature: function (
-              feature: { properties: { [x: string]: any } },
-              layer: { bindPopup: (arg0: string) => void }
-            ) {
-              let popupContent = '<ul>';
-              let hasUrls = false;
-              let pdfUrls: { Titulo: string; Url: string }[] = [];
-              for (const property in feature.properties) {
-                if (
-                  Object.prototype.hasOwnProperty.call(
-                    feature.properties,
-                    property
-                  ) &&
-                  property === 'URLS'
-                ) {
-                  hasUrls = true;
-                  const urls = feature.properties[property];
-                  popupContent += '<li><strong>' + property + ':</strong>';
-                  popupContent += '<ul>';
-                  urls.forEach((urlObject: { Titulo: string; Url: string }) => {
-                    popupContent += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
-                  });
-                  popupContent += '</ul>';
-                  popupContent += '</li>';
-                } else {
-                  popupContent += `<li><strong>${property}:</strong> ${feature.properties[property]}</li>`;
-                }
-              }
-
-              layer.bindPopup(popupContent);
-            },
-          }).addTo(this.mimapa);
-          this.mimapa.fitBounds(geoJsonLayer.getBounds());
-        } else {
-          console.error('El objeto GeoJson no tiene la estructura esperada.');
-        }
+        this.processGeoJsonData(datos,  "Parcela");
       },
       (error) => {
         console.error('Error al llamar al servicio:', error);
@@ -311,63 +199,10 @@ export class MapaComponent implements OnInit {
 
     this.service.getByCuenta(cuenta as string).subscribe(
       (datos) => {
-        let GeoJson: FeatureCollection | undefined;
-
         console.log('Aca entra 2');
         console.log(datos);
 
-        try {
-          GeoJson = JSON.parse(datos);
-          console.log('Aca entra 3');
-        } catch (error) {
-          console.error('Error al parsear los datos JSON:', error);
-        }
-        if (GeoJson && Array.isArray(GeoJson.features)) {
-          this.parcelas = GeoJson;
-          console.log('Aca entra 4');
-          console.log(GeoJson);
-
-          const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
-            style: {
-              color: 'blue',
-              opacity: 0.7,
-            },
-            onEachFeature: function (
-              feature: { properties: { [x: string]: any } },
-              layer: { bindPopup: (arg0: string) => void }
-            ) {
-              let popupContent = '<ul>';
-              let hasUrls = false;
-              let pdfUrls: { Titulo: string; Url: string }[] = [];
-              for (const property in feature.properties) {
-                if (
-                  Object.prototype.hasOwnProperty.call(
-                    feature.properties,
-                    property
-                  ) &&
-                  property === 'URLS'
-                ) {
-                  hasUrls = true;
-                  const urls = feature.properties[property];
-                  popupContent += '<li><strong>' + property + ':</strong>';
-                  popupContent += '<ul>';
-                  urls.forEach((urlObject: { Titulo: string; Url: string }) => {
-                    popupContent += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
-                  });
-                  popupContent += '</ul>';
-                  popupContent += '</li>';
-                } else {
-                  popupContent += `<li><strong>${property}:</strong> ${feature.properties[property]}</li>`;
-                }
-              }
-
-              layer.bindPopup(popupContent);
-            },
-          }).addTo(this.mimapa);
-          this.mimapa.fitBounds(geoJsonLayer.getBounds());
-        } else {
-          console.error('El objeto GeoJson no tiene la estructura esperada.');
-        }
+        this.processGeoJsonData(datos, "Parcela");
       },
       (error) => {
         console.error('Error al llamar al servicio:', error);
@@ -470,63 +305,7 @@ export class MapaComponent implements OnInit {
 
         this.service.getLotes(this.selectedRadioUrbano).subscribe(
           (datos) => {
-            let GeoJson: FeatureCollection | undefined;
-
-            try {
-              GeoJson = JSON.parse(datos);
-            } catch (error) {
-              console.error('Error al parsear los datos JSON:', error);
-            }
-            if (GeoJson && Array.isArray(GeoJson.features)) {
-              this.parcelas = GeoJson;
-              console.log('lotes recibidas:', GeoJson);
-              console.log('Lotes Datos Recibidos', datos);
-
-              const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
-                style: {
-                  color: 'blue',
-                  opacity: 0.7,
-                },
-                onEachFeature: function (
-                  feature: { properties: { [x: string]: any } },
-                  layer: { bindPopup: (arg0: string) => void }
-                ) {
-                  let popupContent = '<ul>';
-                  let hasUrls = false;
-                  let pdfUrls: { Titulo: string; Url: string }[] = [];
-                  for (const property in feature.properties) {
-                    if (
-                      Object.prototype.hasOwnProperty.call(
-                        feature.properties,
-                        property
-                      ) &&
-                      property === 'URLS'
-                    ) {
-                      hasUrls = true;
-                      const urls = feature.properties[property];
-                      popupContent += '<li><strong>' + property + ':</strong>';
-                      popupContent += '<ul>';
-                      urls.forEach(
-                        (urlObject: { Titulo: string; Url: string }) => {
-                          popupContent += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
-                        }
-                      );
-                      popupContent += '</ul>';
-                      popupContent += '</li>';
-                    } else {
-                      popupContent += `<li><strong>${property}:</strong> ${feature.properties[property]}</li>`;
-                    }
-                  }
-
-                  layer.bindPopup(popupContent);
-                },
-              }).addTo(this.mimapa);
-              this.mimapa.fitBounds(geoJsonLayer.getBounds());
-            } else {
-              console.error(
-                'El objeto GeoJson no tiene la estructura esperada.'
-              );
-            }
+            this.processGeoJsonData(datos, "Parcela");
           },
           (error) => {
             console.error('Error al llamar al servicio:', error);
@@ -544,44 +323,16 @@ export class MapaComponent implements OnInit {
 
         this.service.getRadioUrbano(this.selectedPedania).subscribe(
           (datos) => {
+            this.processGeoJsonData(datos, "Radio Urbano");
             let GeoJson: FeatureCollection | undefined;
-
             try {
               GeoJson = JSON.parse(datos);
             } catch (error) {
               console.error('Error al parsear los datos JSON:', error);
             }
+            this.radiosUrbanos = GeoJson;
             if (GeoJson && Array.isArray(GeoJson.features)) {
-              this.radiosUrbanos = GeoJson;
-              console.log('radios urbanos recibidos:', GeoJson);
-
-              this.loadRadioUrbanoIntoSelect(GeoJson.features);
-
-              const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
-                style: {
-                  color: 'black',
-                  opacity: 0.3,
-                },
-                onEachFeature: function (
-                  feature: { properties: { [x: string]: string } },
-                  layer: { bindPopup: (arg0: string) => void }
-                ) {
-                  if (feature.properties) {
-                    layer.bindPopup(
-                      Object.keys(feature.properties)
-                        .map(function (k) {
-                          return k + ': ' + feature.properties[k];
-                        })
-                        .join('<br />')
-                    );
-                  }
-                },
-              }).addTo(this.mimapa);
-              this.mimapa.fitBounds(geoJsonLayer.getBounds());
-            } else {
-              console.error(
-                'El objeto GeoJson no tiene la estructura esperada.'
-              );
+            this.loadRadioUrbanoIntoSelect(GeoJson.features);
             }
           },
           (error) => {
@@ -600,45 +351,16 @@ export class MapaComponent implements OnInit {
         // Llamar a la API y luego actualizar el mapa
         this.service.getPedania(this.selectedDepartamento).subscribe(
           (datos) => {
+            this.processGeoJsonData(datos, "Pedania");
             let GeoJson: FeatureCollection | undefined;
-
             try {
               GeoJson = JSON.parse(datos);
             } catch (error) {
               console.error('Error al parsear los datos JSON:', error);
             }
+            this.pedanias = GeoJson;
             if (GeoJson && Array.isArray(GeoJson.features)) {
-              this.pedanias = GeoJson;
-              console.log('pedanias recibidas:', GeoJson);
-
-              this.loadPedaniasIntoSelect(GeoJson.features);
-
-              this.geoJsonLayerDpto = L.geoJSON(GeoJson as GeoJsonObject, {
-                style: {
-                  color: 'black',
-                  opacity: 0.5,
-                },
-                onEachFeature: function (
-                  feature: { properties: { [x: string]: string } },
-                  layer: { bindPopup: (arg0: string) => void }
-                ) {
-                  if (feature.properties) {
-                    layer.bindPopup(
-                      Object.keys(feature.properties)
-                        .map(function (k) {
-                          return k + ': ' + feature.properties[k];
-                        })
-                        .join('<br />')
-                    );
-                  }
-                },
-              }).addTo(this.mimapa);
-              this.mimapa.fitBounds(this.geoJsonLayerDpto.getBounds());
-              ///this.updateMapLayers(); // Actualiza las capas del mapa
-            } else {
-              console.error(
-                'El objeto GeoJson no tiene la estructura esperada.'
-              );
+            this.loadPedaniasIntoSelect(GeoJson.features);
             }
           },
           (error) => {
@@ -657,6 +379,121 @@ export class MapaComponent implements OnInit {
       );
     } else {
       console.error('No se pudo abrir la ventana.');
+    }
+  }
+
+  processGeoJsonData(datos: any, titulo:string) {
+    (window as any).loadPdf = (urlPdf: string): void => {
+      this.service.getPdf(urlPdf).subscribe(
+        (pdfBlob: Blob) => {
+          const fileURL = URL.createObjectURL(pdfBlob);
+          window.open(fileURL, '_blank');
+        },
+        (error) => {
+          console.error('Error fetching PDF:', error);
+          // Aquí puedes manejar el error como desees
+        }
+      );
+    };
+    const capitalize = (str: string) => {
+      str.toLowerCase();
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    };
+    let GeoJson: FeatureCollection | undefined;
+    try {
+      GeoJson = JSON.parse(datos);
+    } catch (error) {
+      console.error('Error al parsear los datos JSON:', error);
+      return;
+    }
+    if (GeoJson && Array.isArray(GeoJson.features)) {
+      this.parcelas = GeoJson;
+
+      const geoJsonLayer = L.geoJSON(GeoJson as GeoJsonObject, {
+        style: {
+          color: 'blue',
+          opacity: 0.7,
+        },
+        onEachFeature: (
+          feature: { properties: { [x: string]: any } },
+          layer: { bindPopup: (arg0: string) => void }
+        ) => {
+          if (feature.properties) {
+            let propertiesList = '';
+
+            for (const property in feature.properties) {
+              if (
+                Object.prototype.hasOwnProperty.call(
+                  feature.properties,
+                  property
+                )
+              ) {
+                const propertyName = property.toUpperCase();
+                if (property === 'URLS') {
+                  const urls = feature.properties[property];
+                  propertiesList += `
+                      <div style="border: 1px solid #D6D5D5; width: auto;"></div>
+                      <div style=" padding: 5px 15px;
+                                  display: flex;
+                                  align-items: center;
+                                  justify-content: space-between;
+                                  min-width: 225px;
+                                  "
+                      >
+                  <strong> DOCUMENTOS </strong> `; //${property}
+                  propertiesList += '<ul>';
+                  urls.forEach((urlObject: { Titulo: string; Url: string }) => {
+                    propertiesList += `<li><a href="#" onclick="loadPdf('${urlObject.Url}')">${urlObject.Titulo}</a></li>`;
+                  });
+                  propertiesList += '</ul>';
+                } else if (property.toUpperCase() !== 'CODIGO') {
+                  const propertyValue = capitalize(feature.properties[property]);
+                  propertiesList += `
+                                        <div style="border: 1px solid #D6D5D5; width: auto;"></div>
+                                        <div style=" padding: 5px 15px;
+                                                    display: flex;
+                                                    align-items: center;
+                                                    justify-content: space-between;
+                                                    min-width: 225px;
+                                                    "
+                                        >
+                                          <strong>${propertyName} </strong> 
+                                          <p style="margin: 0">${propertyValue}</p>
+                                        </div>
+                                        `;
+                }
+              }
+            }
+            const popupContent = `
+                    <div 
+                      style=" border: 1px solid #D6D5D5;
+                              border-radius: 10px;" 
+                    >
+                      <h5 style=" text-align: center;
+                                  margin: 0;
+                                  padding: 7px 15px;
+                                  background-color: #FF5700;
+                                  border-radius: 10px 10px 0 0;
+                                  color: #FFFFFF;
+                                  "
+                      >
+                      ${capitalize(titulo)}
+
+                      </h5>
+
+                      <div>${propertiesList}</div>
+
+
+                    </div>
+                  `;
+
+            layer.bindPopup(popupContent);
+          }
+        },
+      }).addTo(this.mimapa);
+      this.mimapa.fitBounds(geoJsonLayer.getBounds());
+    } else {
+      console.error('El objeto GeoJson no tiene la estructura esperada.');
     }
   }
 }
