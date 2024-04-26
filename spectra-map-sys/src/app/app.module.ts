@@ -16,6 +16,7 @@ import { HeaderComponent } from './components/layout/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule  } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FiltrosMapaComponent } from './components/filtros-mapa/filtros-mapa.component';
 import { PowerbiReportComponent } from './components/powerbi-report/powerbi-report.component';
 import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component';
@@ -43,6 +44,7 @@ import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component
     AppRoutingModule,
     BrowserAnimationsModule,
     MatListModule,
+    MatSnackBarModule,
     MatSidenavModule
   ],
   providers: [],
